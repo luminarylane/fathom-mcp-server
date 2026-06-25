@@ -10,12 +10,12 @@ A Model Context Protocol (MCP) server that enables Claude Desktop (and other MCP
 
 ### Meeting Intelligence Tools
 
-| Tool | Description |
-|------|-------------|
-| `fathom_list_meetings` | List recent meetings with optional date filters. Returns title, date, participants, summary, and action items |
-| `fathom_get_summary` | Get the AI-generated summary for a specific meeting (markdown formatted) |
-| `fathom_get_transcript` | Get the full speaker-labeled, timestamped transcript for a meeting |
-| `fathom_search_meetings` | Search meetings by keyword in title with optional date filtering |
+| Tool                     | Description                                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `fathom_list_meetings`   | List recent meetings with optional date filters. Returns title, date, participants, summary, and action items |
+| `fathom_get_summary`     | Get the AI-generated summary for a specific meeting (markdown formatted)                                      |
+| `fathom_get_transcript`  | Get the full speaker-labeled, timestamped transcript for a meeting                                            |
+| `fathom_search_meetings` | Search meetings by keyword in title with optional date filtering                                              |
 
 ### Built-in Reliability
 
@@ -47,6 +47,7 @@ FATHOM_API_KEY=your-key npx fathom-mcp-server
 ```
 
 **Claude Desktop configuration:**
+
 ```json
 {
   "mcpServers": {
@@ -68,6 +69,7 @@ npm install -g fathom-mcp-server
 ```
 
 Then configure Claude Desktop:
+
 ```json
 {
   "mcpServers": {
@@ -91,6 +93,7 @@ npm run build
 ```
 
 Then configure Claude Desktop:
+
 ```json
 {
   "mcpServers": {
@@ -130,6 +133,7 @@ Fathom enforces 60 requests per 60 seconds per user. The server handles this aut
 ```
 FATHOM_API_KEY env var is required
 ```
+
 Set the `FATHOM_API_KEY` environment variable before starting the server.
 
 ### 401 Authentication failed
@@ -137,6 +141,7 @@ Set the `FATHOM_API_KEY` environment variable before starting the server.
 ```
 AUTH_FAILED: FATHOM_API_KEY is invalid or expired.
 ```
+
 Check your API key in [Fathom Settings](https://app.fathom.video/settings/api) and regenerate if needed.
 
 ### Rate limit exceeded
@@ -144,6 +149,7 @@ Check your API key in [Fathom Settings](https://app.fathom.video/settings/api) a
 ```
 RATE_LIMITED: Fathom rate limit (60/min). Wait 60s and retry.
 ```
+
 The server handles short waits automatically. For longer windows, wait and retry.
 
 ### Reporting Issues
