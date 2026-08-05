@@ -1,7 +1,7 @@
 # Fathom MCP Server
 
 [![MCP](https://img.shields.io/badge/MCP-1.0-blue)](https://modelcontextprotocol.io)
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)](https://nodejs.org)
+[![Node.js](https://img.shields.io/badge/Node.js-22.14%2B-green)](https://nodejs.org)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
 A Model Context Protocol (MCP) server that enables Claude Desktop (and other MCP clients) to access your [Fathom](https://fathom.video) meeting intelligence — list meetings, read summaries, search by title, and pull full transcripts.
@@ -28,7 +28,7 @@ A Model Context Protocol (MCP) server that enables Claude Desktop (and other MCP
 
 ### Prerequisites
 
-- Node.js 18 or higher
+- Node.js 22.14 or higher
 - A [Fathom](https://fathom.video) account with API access
 - Claude Desktop (or any MCP-compatible client)
 
@@ -43,7 +43,7 @@ A Model Context Protocol (MCP) server that enables Claude Desktop (and other MCP
 
 ```bash
 # Test it works
-FATHOM_API_KEY=your-key npx fathom-mcp-server
+FATHOM_API_KEY=your-key npx --yes @luminarylane/fathom-mcp-server
 ```
 
 **Claude Desktop configuration:**
@@ -53,7 +53,7 @@ FATHOM_API_KEY=your-key npx fathom-mcp-server
   "mcpServers": {
     "fathom": {
       "command": "npx",
-      "args": ["-y", "fathom-mcp-server"],
+      "args": ["--yes", "@luminarylane/fathom-mcp-server"],
       "env": {
         "FATHOM_API_KEY": "your-fathom-api-key"
       }
@@ -65,7 +65,7 @@ FATHOM_API_KEY=your-key npx fathom-mcp-server
 #### Option 2: Install from npm
 
 ```bash
-npm install -g fathom-mcp-server
+npm install -g @luminarylane/fathom-mcp-server
 ```
 
 Then configure Claude Desktop:
@@ -74,7 +74,7 @@ Then configure Claude Desktop:
 {
   "mcpServers": {
     "fathom": {
-      "command": "fathom-mcp-server",
+      "command": "luminarylane-fathom-mcp",
       "env": {
         "FATHOM_API_KEY": "your-fathom-api-key"
       }

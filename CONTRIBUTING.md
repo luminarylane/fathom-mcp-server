@@ -6,7 +6,7 @@ Thank you for your interest in contributing! This guide will help you get starte
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22.14+
 - npm 9+
 - Git
 
@@ -47,7 +47,7 @@ Follow the existing code style and TypeScript conventions.
 
 ```bash
 # Type check
-npx tsc --noEmit
+npm run typecheck
 
 # Format code
 npx prettier --write .
@@ -79,10 +79,9 @@ gh pr create --title "Fix #<issue>: Description" --body "Details..."
 
 ## Pull Request Process
 
-1. Ensure `npx tsc --noEmit` passes
-2. Ensure `npx prettier --check .` passes
-3. Write a clear PR description — what changed and why
-4. Link to the issue with `Closes #123`
+1. Ensure `npm run check` passes
+2. Write a clear PR description — what changed and why
+3. Link to the issue with `Closes #123`
 
 ## Project Structure
 
