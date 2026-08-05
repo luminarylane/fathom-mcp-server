@@ -6,12 +6,18 @@
  * Auth: FATHOM_API_KEY env var (X-Api-Key header).
  *
  * Usage:
- *   FATHOM_API_KEY=xxx npx fathom-mcp-server
+ *   FATHOM_API_KEY=xxx npx --yes @luminarylane/fathom-mcp-server
  */
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import logger from "./lib/logger.js";
+import {
+  getSessionTrace,
+  flushLangfuse,
+  shutdownLangfuse,
+} from "./lib/langfuse.js";
 import { FathomClient } from "./client.js";
 import { textResult, errorResult, senseResult } from "./response.js";
 import { createRequire } from "node:module";
@@ -21,7 +27,7 @@ const { version } = require("../package.json") as { version: string };
 
 const FATHOM_API_KEY = process.env.FATHOM_API_KEY;
 if (!FATHOM_API_KEY) {
-  console.error("FATHOM_API_KEY env var is required");
+  logger.error("FATHOM_API_KEY env var is required");
   process.exit(1);
 }
 
@@ -42,11 +48,19 @@ function safeHandler<T>(
   ReturnType<typeof textResult | typeof senseResult | typeof errorResult>
 > {
   return async (args: T) => {
+    const trace = getSessionTrace("fathom-mcp-server");
+    const span = trace?.span({
+      name: `tool:${toolName}`,
+      input: args as Record<string, unknown>,
+    });
+
     try {
-      return await handler(args);
+      const result = await handler(args);
+      span?.update({ output: result });
+      return result;
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
-      console.error(`[${toolName}] Error: ${msg}`);
+      logger.error(`[${toolName}] Error: ${msg}`);
 
       const statusMatch = msg.match(/Fathom API (\d+)/);
       const statusCode = statusMatch ? parseInt(statusMatch[1], 10) : undefined;
@@ -63,10 +77,13 @@ function safeHandler<T>(
           "SERVER_ERROR: Fathom is having issues. Wait 30s and retry once.";
       }
 
+      span?.update({ output: { error: msg, statusCode }, level: "ERROR" });
       return errorResult("API error", `${toolName} failed: ${msg}`, {
         ...(statusCode !== undefined && { statusCode }),
         ...(action && { action }),
       });
+    } finally {
+      span?.end();
     }
   };
 }
@@ -285,10 +302,12 @@ server.registerTool(
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("Fathom MCP Server running on stdio");
+  logger.error("Fathom MCP Server running on stdio");
 }
 
-main().catch((e) => {
-  console.error("Fatal:", e);
+main().catch(async (e) => {
+  logger.error({ err: e }, "Fatal");
+  await flushLangfuse();
+  await shutdownLangfuse();
   process.exit(1);
 });
