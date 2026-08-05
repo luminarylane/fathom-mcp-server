@@ -39,6 +39,8 @@ A Model Context Protocol (MCP) server that enables Claude Desktop (and other MCP
 
 ### Installation
 
+Published package: [@luminarylane/fathom-mcp-server on npm](https://www.npmjs.com/package/@luminarylane/fathom-mcp-server)
+
 #### Option 1: npx (Recommended — Zero Install)
 
 ```bash
