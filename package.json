@@ -1,6 +1,6 @@
 {
   "name": "@luminarylane/fathom-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Standalone Fathom MCP Server — meeting intelligence SENSE tools",
   "type": "module",
   "main": "dist/index.js",
